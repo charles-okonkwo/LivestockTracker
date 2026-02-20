@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Livestock Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gradient-to-br from-green-50 to-emerald-100 min-h-screen">
+    <nav class="bg-gradient-to-r from-green-700 to-emerald-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold flex items-center gap-2"><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path></svg> Livestock Tracker</h1>
+                <div class="flex items-center space-x-4">
+                    <span id="userName" class="text-green-100"></span>
+                    <button id="logoutBtn" class="bg-green-800 hover:bg-green-900 px-4 py-2 rounded-lg transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Farmer Dashboard</h2>
+            <p class="text-gray-600">Manage your livestock health and vaccination records</p>
+        </div>
+
+        <!-- Total Farm Equity Card -->
+        <div id="equityCard" class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold mb-2">Total Farm Equity</h3>
+                    <p class="text-4xl font-bold" id="totalEquity">₦0</p>
+                    <p class="text-green-100 text-sm mt-2"><span id="animalCountEquity">0</span> animals valued</p>
+                </div>
+                <svg class="w-16 h-16 opacity-30" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            </div>
+        </div>
+
+        <!-- Due for Vaccination Alert -->
+        <div id="dueVaccinationAlert" class="bg-yellow-100 border-l-4 border-yellow-500 p-4 mb-6 rounded-lg hidden">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 24 24"><path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"></path></svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-lg font-semibold text-yellow-800">Animals Due for Vaccination</h3>
+                    <p class="text-yellow-700" id="dueCount">0 animals need attention</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register New Animal Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h3 class="text-xl font-semibold text-gray-800 mb-4">Register New Animal</h3>
+            <form id="animalForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Tag ID *</label>
+                    <input type="text" id="tagId" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Breed *</label>
+                    <input type="text" id="breed" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Species *</label>
+                    <select id="species" required
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                        <option value="">Select Species</option>
+                        <option value="Cattle">Cattle</option>
+                        <option value="Sheep">Sheep</option>
+                        <option value="Goat">Goat</option>
+                        <option value="Pig">Pig</option>
+                        <option value="Chicken">Chicken</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                    <input type="date" id="dateOfBirth"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                    <select id="gender"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Unknown">Unknown</option>
+                    </select>
+                </div>
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition font-semibold">
+                        Register Animal
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Animals List -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">My Animals</h3>
+                <button id="refreshBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">
+                    Refresh
+                </button>
+            </div>
+            <div id="animalsList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Loading animals...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Health History Modal -->
+    <div id="historyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-green-700 to-emerald-600 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold" id="modalAnimalTitle">Health History</h3>
+                <button id="closeModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <div id="historyContent">
+                    <p class="text-gray-500 text-center py-8">Loading health records...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Animal Modal -->
+    <div id="editAnimalModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-green-700 to-emerald-600 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Edit Animal Profile</h3>
+                <button id="closeEditModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <form id="editAnimalForm" class="space-y-4">
+                    <input type="hidden" id="editAnimalId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Tag ID (Read-Only)</label>
+                        <input type="text" id="editTagId" readonly
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Breed</label>
+                        <input type="text" id="editBreed" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                        <select id="editGender"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                        <input type="date" id="editDateOfBirth"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Target Selling Price (₦)</label>
+                        <input type="number" id="editTargetPrice" step="1000"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="text-sm text-gray-700"><strong>Estimated Market Value:</strong> <span id="estimatedValueDisplay" class="text-lg font-bold text-green-600">₦0</span></p>
+                        <p class="text-xs text-gray-600 mt-2">Based on breed and vet certification status</p>
+                    </div>
+                    <div class="flex justify-end space-x-3 pt-4 border-t">
+                        <button type="button" id="cancelEditBtn"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Vaccination Modal -->
+    <div id="requestVaccinationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-green-700 to-emerald-600 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold" id="vaccinationModalTitle">Request Vaccination</h3>
+                <button id="closeRequestVaccinationModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <form id="requestVaccinationForm" class="space-y-4">
+                    <input type="hidden" id="requestVaccinationAnimalId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Animal *</label>
+                        <input type="text" id="requestVaccinationAnimalName" readonly
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50 text-gray-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Type *</label>
+                        <input type="text" id="requestVaccinationType" required placeholder="e.g., FMD, Brucellosis, Anthrax"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Proposed Vaccination Date</label>
+                        <input type="date" id="requestProposedDate"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Notes (Optional)</label>
+                        <textarea id="requestVaccinationNotes" rows="3" placeholder="Additional notes for the veterinarian..."
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"></textarea>
+                    </div>
+                    <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200">
+                        <p class="text-sm text-yellow-800"><svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75-3.54-4.3 5.92h11.01L13.96 6.29z"></path></svg><strong>Note:</strong> This vaccination request will be sent to the veterinarian for approval. The record will be created only after vet approval.</p>
+                    </div>
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelRequestVaccinationBtn"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">
+                            Submit Request
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

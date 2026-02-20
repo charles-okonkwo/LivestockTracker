@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veterinary Portal - Livestock Tracker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-cyan-100 min-h-screen">
+    <nav class="bg-gradient-to-r from-blue-700 to-cyan-600 text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold flex items-center gap-3">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    Veterinary Portal
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <span id="userName" class="text-blue-100"></span>
+                    <button id="logoutBtn" class="bg-blue-800 hover:bg-blue-900 px-4 py-2 rounded-lg transition">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Veterinary Management System</h2>
+            <p class="text-gray-600">Approve vaccination requests, sign-off treatments, manage medical records</p>
+        </div>
+
+        <!-- Search Animal Section -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8 border-l-4 border-blue-600">
+            <div class="flex items-center gap-3 mb-4">
+                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <h3 class="text-xl font-semibold text-gray-800">Search Animal</h3>
+            </div>
+            <div class="flex gap-4">
+                <input type="text" id="searchTagId" placeholder="Enter Tag ID (e.g., TAG001)"
+                    class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <button id="searchBtn" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition font-semibold">
+                    Search
+                </button>
+            </div>
+            <div id="searchResult" class="mt-4 hidden">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+
+        <!-- Pending Vaccination Requests -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8 border-l-4 border-amber-500">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4v2m0 1a9 9 0 110-18 9 9 0 010 18z"></path></svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Pending Vaccination Requests</h3>
+                </div>
+                <button id="refreshRequestsBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Refresh
+                </button>
+            </div>
+            <div id="requestsList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Loading vaccination requests...</p>
+            </div>
+        </div>
+
+        <!-- Pending Sign-Offs -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8 border-l-4 border-orange-500">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m7 0a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Pending Sign-Offs</h3>
+                </div>
+                <button id="refreshPendingBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Refresh
+                </button>
+            </div>
+            <div id="pendingList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Loading pending treatments...</p>
+            </div>
+        </div>
+
+        <!-- Verified Records -->
+        <div class="bg-white rounded-lg shadow-lg p-6 border-l-4 border-green-600">
+            <div class="flex justify-between items-center mb-4">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                    <h3 class="text-xl font-semibold text-gray-800">Verified Records</h3>
+                </div>
+                <button id="refreshVerifiedBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                    Refresh
+                </button>
+            </div>
+            <div id="verifiedList" class="space-y-4">
+                <p class="text-gray-500 text-center py-8">Loading verified records...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Animal Health History Modal -->
+    <div id="historyModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-blue-700 to-cyan-600 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold" id="modalAnimalTitle">Health History</h3>
+                <button id="closeModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <div id="historyContent">
+                    <p class="text-gray-500 text-center py-8">Loading health records...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approve Request Modal -->
+    <div id="approveRequestModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-blue-700 to-cyan-600 text-white px-6 py-4 flex justify-between items-center">
+                <h3 class="text-xl font-semibold">Approve Vaccination Request</h3>
+                <button id="closeApproveModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <form id="approveRequestForm" class="space-y-4">
+                    <input type="hidden" id="approveRequestId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Type</label>
+                        <input type="text" id="approveVaccinationType" readonly
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Vaccination Date *</label>
+                        <input type="date" id="approveVaccinationDate" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Next Due Date *</label>
+                        <input type="date" id="approveNextDueDate" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelApproveBtn"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
+                            Proceed to Sign-Off
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Professional Sign-Off Modal -->
+    <div id="signOffModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="bg-gradient-to-r from-blue-700 to-cyan-600 text-white px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <h3 class="text-xl font-semibold">Professional Sign-Off</h3>
+                </div>
+                <button id="closeSignOffModal" class="text-white hover:text-gray-200 text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+                <form id="signOffForm" class="space-y-4">
+                    <input type="hidden" id="signOffRecordId">
+                    
+                    <!-- Animal Info Display -->
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <p class="text-sm text-gray-700"><strong>Animal:</strong> <span id="signOffAnimalInfo">--</span></p>
+                        <p class="text-sm text-gray-700"><strong>Vaccination Type:</strong> <span id="signOffVaccineType">--</span></p>
+                        <p class="text-sm text-gray-700"><strong>Market Value Increase:</strong> <span id="signOffValueIncrease" class="text-green-700 font-semibold">+15% (₦0)</span></p>
+                    </div>
+
+                    <!-- Batch Number -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Batch Number *</label>
+                        <input type="text" id="batchNumber" placeholder="e.g., LOT2026-001" required maxlength="50"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <!-- Dosage -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Dosage *</label>
+                        <input type="text" id="dosage" placeholder="e.g., 10ml intramuscular" required maxlength="100"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <!-- Withdrawal Period -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Withdrawal Period (Days) *</label>
+                        <input type="number" id="withdrawalPeriod" placeholder="e.g., 30" required min="0" max="365"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <!-- Medical Notes (SOAP Format) -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Medical Notes (SOAP Format) *</label>
+                        <textarea id="soapNotes" placeholder="Subjective: (Patient symptoms/history)&#10;Objective: (Observations/vital signs)&#10;Assessment: (Diagnosis)&#10;Plan: (Treatment plan)" 
+                            required rows="6"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"></textarea>
+                        <p class="text-xs text-gray-500 mt-1">Use SOAP format: Subjective, Objective, Assessment, Plan</p>
+                    </div>
+
+                    <!-- Digital PIN (Security) -->
+                    <div class="border-t border-gray-200 pt-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">4-Digit Digital PIN (Security) *</label>
+                        <input type="password" id="digitalPin" placeholder="Enter your 4-digit PIN" required maxlength="4" pattern="[0-9]{4}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-2xl tracking-widest">
+                        <p class="text-xs text-gray-500 mt-1">Only numeric PIN required to authorize signature</p>
+                    </div>
+
+                    <div class="flex justify-end space-x-3 pt-4">
+                        <button type="button" id="cancelSignOffBtn"
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition">
+                            Cancel
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold flex items-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            Sign Off with PIN
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/vet.js"></script>
+</body>
+</html>
