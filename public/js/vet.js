@@ -472,6 +472,21 @@ async function viewAnimalHistory(animalId) {
     const content = document.getElementById('historyContent');
     const title = document.getElementById('modalAnimalTitle');
     
+    // Log for debugging
+    console.log('Opening health history for animal ID:', animalId);
+    
+    // Validate animalId
+    if (!animalId || animalId === 'undefined') {
+        content.innerHTML = `
+            <div class="text-center py-12">
+                <p class="text-red-500 text-lg">Invalid animal ID</p>
+                <p class="text-gray-400 text-sm mt-2">Please refresh and try again</p>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+        return;
+    }
+    
     try {
         const animalResponse = await fetch(`${API_URL}/livestock/animals/${animalId}`, {
             headers: {
@@ -481,6 +496,7 @@ async function viewAnimalHistory(animalId) {
         const animal = await animalResponse.json();
         title.textContent = `Health History - ${animal.tagId} (${animal.breed})`;
     } catch (error) {
+        console.log('Note: Could not load animal details, continuing...');
         title.textContent = 'Health History';
     }
     
@@ -488,17 +504,24 @@ async function viewAnimalHistory(animalId) {
     content.innerHTML = '<p class="text-gray-500 text-center py-8">Loading health records...</p>';
     
     try {
+        console.log(`Fetching history from: ${API_URL}/livestock/animals/${animalId}/history`);
+        
         const response = await fetch(`${API_URL}/livestock/animals/${animalId}/history`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
 
+        console.log('Response status:', response.status, 'OK:', response.ok);
+
         if (!response.ok) {
-            throw new Error(`Failed to fetch history: ${response.status}`);
+            const errorData = await response.text();
+            console.error('API Error Response:', errorData);
+            throw new Error(`Failed to fetch history: ${response.status} - ${errorData}`);
         }
 
         const records = await response.json();
+        console.log('Received records:', records);
         
         if (!records || records.length === 0) {
             content.innerHTML = `
@@ -553,10 +576,12 @@ async function viewAnimalHistory(animalId) {
             </div>
         `;
     } catch (error) {
+        console.error('Error loading health history:', error);
         content.innerHTML = `
             <div class="text-center py-12">
                 <p class="text-red-500 text-lg">Error loading health history</p>
                 <p class="text-gray-400 text-sm mt-2">Please try again later</p>
+                <p class="text-gray-500 text-xs mt-4">Error: ${error.message}</p>
             </div>
         `;
     }

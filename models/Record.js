@@ -150,6 +150,8 @@ class Record {
       return {
         ...record,
         animalId: {
+          id: record.animalId,
+          _id: record.animalId,
           tagId: animal ? animal.tagId : null,
           breed: animal ? animal.breed : null,
           species: animal ? animal.species : null
