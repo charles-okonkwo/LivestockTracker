@@ -1,159 +1,157 @@
-# Livestock Health & Vaccination Tracker
+# Livestock Health and Vaccination Tracker
 
-A full-stack web application for tracking livestock health records and vaccination schedules. Built with Node.js, Express, MongoDB, and a modern Tailwind CSS frontend.
+## Overview
 
-## Project Information
+The Livestock Health and Vaccination Tracker is a full-stack web application designed to help farmers and veterinarians manage livestock healthcare more efficiently.
 
-**Course:** SEN 201 Software Engineering  
-**Group:** Group 3  
-**Group Lead:** Chukwuemeka Okonkwo
+The system allows users to monitor animal health records, track vaccination schedules, manage medical history, and improve livestock disease prevention through organized record keeping.
 
-### Group Members
-- Chukwuemeka Okonkwo (Group Lead)
-- [Placeholder for Group Member 2]
-- [Placeholder for Group Member 3]
-- [Placeholder for Group Member 4]
+## Project Objective
 
-## System Architecture
+The main objectives of this project are:
 
-Based on Swimlane Diagrams, the system supports three main roles:
+- To create a digital livestock healthcare management platform.
+- To help farmers keep accurate animal health records.
+- To track vaccination schedules and medical treatments.
+- To improve communication between farmers and veterinarians.
+- To reduce the risk of missed vaccinations and disease outbreaks.
 
-### 1. Farmer Role
-- Register animals with Unique Tag ID, Breed, and Species
-- Access dashboard showing 'Due for Vaccination' flags
-- View health history for all registered animals
-- Create vaccination records
+## Features
 
-### 2. Vet Role
-- Secure portal to view pending treatments
-- Sign off/verify vaccination records as official
-- View all verified records
+### Farmer Features
 
-### 3. System (Backend)
-- Automatically calculates vaccination schedules
-- Stores permanent Health History for every animal
-- Manages authentication and authorization
+- Farmer account registration and login
+- Add and manage livestock records
+- View animal health information
+- Track vaccination history
+- Monitor upcoming vaccination schedules
+- Manage livestock profiles
+
+### Veterinarian Features
+
+- Access assigned livestock records
+- Update animal medical information
+- Record treatments and vaccinations
+- Monitor livestock health status
+
+### System Features
+
+- User authentication
+- Database management
+- Secure data storage
+- Health record tracking
+- Responsive user interface
+
+
+## Technologies Used
+
+### Frontend
+
+- HTML
+- CSS
+- Tailwind CSS
+- JavaScript
+
+### Backend
+
+- Node.js
+- Express.js
+
+### Database
+
+- MongoDB
+
+
+## System Workflow
+
+```
+User Registration/Login
+
+        ↓
+
+Dashboard
+
+        ↓
+
+Add Livestock Records
+
+        ↓
+
+Record Vaccination Details
+
+        ↓
+
+Track Health History
+
+        ↓
+
+Monitor Animal Healthcare
+```
+
 
 ## Project Structure
 
 ```
-livestock/
-├── app.js                 # Entry point
-├── package.json           # Dependencies
-├── .env.example          # Environment variables template
-├── README.md             # This file
-├── models/               # Database schemas
-│   ├── Animal.js
-│   ├── User.js
-│   └── Record.js
-├── routes/               # API endpoints
-│   ├── auth.js
-│   ├── livestock.js
-│   └── vaccination.js
-├── middleware/           # Custom middleware
-│   └── auth.js
-└── public/               # Frontend files
-    ├── index.html
-    ├── dashboard.html
-    ├── vet-portal.html
-    ├── css/
-    │   └── style.css
-    └── js/
-        ├── auth.js
-        ├── dashboard.js
-        └── vet.js
+Livestock-Health-Vaccination-Tracker
+
+├── frontend/
+│   ├── index.html
+│   ├── styles.css
+│   └── script.js
+│
+├── backend/
+│   ├── server.js
+│   ├── routes/
+│   └── models/
+│
+├── database/
+│
+├── README.md
+└── package.json
 ```
+
 
 ## Installation
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+Clone the repository:
 
-3. Set up environment variables:
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and update the values as needed.
+```bash
+git clone https://github.com/charles-okonkwo/Livestock-Health-Vaccination-Tracker.git
+```
 
-4. Database Setup:
-   - **No database installation needed!** This project uses LowDB, which is a simple JSON file-based database.
-   - The database file (`livestock.json`) will be automatically created in the `data/` folder when you first run the application.
-   - No compilation, no build tools, no configuration - just works!
+Install dependencies:
 
-5. Start the server:
-   ```bash
-   npm start
-   ```
-   Or for development with auto-reload:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm install
+```
 
-6. Open your browser and navigate to `http://localhost:3000`
+Start the server:
 
-## Features
+```bash
+npm start
+```
 
-- **User Authentication**: Secure registration and login for Farmers and Veterinarians
-- **Animal Registration**: Farmers can register animals with unique tag IDs
-- **Vaccination Tracking**: Automatic calculation of next due dates
-- **Due Vaccination Alerts**: Dashboard flags animals due for vaccination
-- **Vet Verification**: Veterinarians can verify and sign off on vaccination records
-- **Health History**: Permanent record of all vaccinations for each animal
-- **Modern UI**: Clean, green-themed agricultural dashboard using Tailwind CSS
 
-## API Endpoints
+## Future Improvements
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/me` - Get current user info
+- AI-based livestock disease prediction
+- SMS vaccination reminders
+- Mobile application version
+- Cloud database deployment
+- Veterinary appointment booking system
+- Analytics dashboard for farmers
 
-### Livestock
-- `POST /api/livestock/register` - Register new animal (Farmer only)
-- `GET /api/livestock/animals` - Get all animals (Farmer only)
-- `GET /api/livestock/animals/:id` - Get single animal
-- `GET /api/livestock/due-vaccination` - Get animals due for vaccination
-- `GET /api/livestock/animals/:id/history` - Get health history
 
-### Vaccination
-- `POST /api/vaccination/record` - Create vaccination record (Farmer)
-- `GET /api/vaccination/pending` - Get pending treatments (Vet only)
-- `POST /api/vaccination/verify/:id` - Verify record (Vet only)
-- `GET /api/vaccination/verified` - Get all verified records
+## Purpose
 
-## Technologies Used
+This project demonstrates the application of software engineering principles in agriculture by using technology to improve livestock healthcare management.
 
-- **Backend**: Node.js, Express.js
-- **Database**: LowDB (JSON file-based, no installation or compilation required)
-- **Authentication**: JWT (JSON Web Tokens), bcryptjs
-- **Frontend**: HTML5, Tailwind CSS (via CDN), Vanilla JavaScript
-- **Validation**: express-validator
 
-## Development Notes
+## Author
 
-- The system uses JWT tokens for authentication
-- Passwords are hashed using bcryptjs
-- LowDB database is automatically initialized in `config/database.js`
-- Database file is stored in `data/livestock.json` (created automatically)
-- All API routes are prefixed with `/api`
-- Frontend uses localStorage to store authentication tokens
+**Okonkwo Charles**
 
-## Future Enhancements
+Software Engineering Student  
+Admiralty University of Nigeria
 
-- Email notifications for due vaccinations
-- PDF report generation
-- Mobile app support
-- Advanced analytics and reporting
-- Multi-farm support
-
-## License
-
-MIT
-
-## Deadline
-
-Mid-February 2024
-
+GitHub: @charles-okonkwo
